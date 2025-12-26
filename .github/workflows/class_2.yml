@@ -1,0 +1,56 @@
+name: Simple 5-Stage Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout stage
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Build stage
+      - name: Build
+        run: |
+          echo "Starting build stage..."
+          echo "Build completed successfully"
+
+      # 3. Test stage
+      - name: Test
+        run: |
+          echo "Running tests..."
+          echo "All tests passed"
+
+      # 4. Cleanup stage
+      - name: Cleanup
+        run: |
+          echo "Cleaning up workspace..."
+          rm -rf /tmp/* || true
+
+      # 5. Machine Details stage
+      - name: Machine Details
+        run: |
+          echo "Hostname:"
+          hostname
+
+          echo ""
+          echo "CPU Info:"
+          nproc
+          lscpu | grep -E 'Model name|CPU\(s\)'
+
+          echo ""
+          echo "Memory Info:"
+          free -h
+
+          echo ""
+          echo "Disk Space:"
+          df -h
+
+          echo ""
+          echo "OS Details:"
+          uname -a
